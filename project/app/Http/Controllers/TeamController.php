@@ -27,38 +27,73 @@ class TeamController extends Controller
         $user = Auth::user();
 
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|alpha_dash|max:255',
         ]);
         $team = new Team;
         $team->name = $validatedData['name'];
-        $team->user_id = 2;
+        $team->user_id = $user -> id;
         $team->save();
 
         return redirect()->route('index');
     }
 
+    public function edit($id)
+    {   
+        $team = Team::findOrFail($id);
+
+        return view ('teamEdit', compact('team'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|alpha_dash|max:255',
+        ]);
+
+        $team = Team::findOrFail($id);
+        $team ->name = $validatedData['name'];
+        $team->save();
+
+        return redirect()->route('show', $team->id)->with('message','Nome del team modificato con successo');
+    }
+
+    public function delete($id)
+    {
+        $team = Team::findOrFail($id);
+        $userId = $team->user_id;
+        $teamName = $team->name;
+        $team ->delete();
+
+        return redirect()->route('profile',$userId)->with('message','Team '. $teamName . ' rimosso con successo');
+    }
+
     public function index()
     {
         $teams = Team::all();
-        return view('index', compact('teams'));
+        return view('home', compact('teams'));
     }
 
     public function show($id)
     {
         $team = Team::findOrFail($id);
+        $userId = Auth::id();
 
-        return view('showTeam', compact('team'));
+        return view('showTeam', compact('team','userId'));
     }
 
     function catch (Request $request, Caller $caller) {
         $team = Team::findOrFail($request['team_id']);
 
+        
+        if(($team->pokemons->count()) >= 3){
+            return redirect()->back()->with('message','Hai già abbastanza pokemon nel tuo team!');
+        }
         $response = $caller->call(rand(1, 500))->json();
         $id = $response['id'];
         $name = $response['name'];
         $types = $response['types'];
         $baseExp = $response['base_experience'];
-        $picture = $response['sprites']['back_default'];
+        $picture = $response['sprites']['front_default'];
 
         $pokemon = new Pokemon;
         $pokemon->name = $name;
@@ -93,6 +128,6 @@ class TeamController extends Controller
             }
             $pokemon->types()->attach($type);
         }
-        return redirect()->route('index');
+        return redirect()->back()->with('message','Un nuovo pokemon è stato aggiunto al tuo team!');
     }
 }
