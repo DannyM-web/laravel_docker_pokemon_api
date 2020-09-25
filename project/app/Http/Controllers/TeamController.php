@@ -84,7 +84,6 @@ class TeamController extends Controller
     function catch (Request $request, Caller $caller) {
         $team = Team::findOrFail($request['team_id']);
 
-        
         if(($team->pokemons->count()) >= 3){
             return redirect()->back()->with('message','Hai già abbastanza pokemon nel tuo team!');
         }
@@ -94,12 +93,13 @@ class TeamController extends Controller
         $types = $response['types'];
         $baseExp = $response['base_experience'];
         $picture = $response['sprites']['front_default'];
-
+        
         $pokemon = new Pokemon;
         $pokemon->name = $name;
         $pokemon->base_exp = $baseExp;
         $pokemon->picture = $picture;
         $pokemon->team_id = $team->id;
+        // var_dump($response['abilities']);
         $pokemon->save();
 
         foreach ($response['abilities'] as $x_ability) {

@@ -46,3 +46,6 @@ Route::get('/pokemon/catch', [TeamController::class, 'catch'])->name('catch');
 
 Route::get('/profile/{id}', [ProfileController::class, 'index'])->name('profile');
 Route::get('/filter', [ProfileController::class, 'filter'])->name('filter');
+
+
+Route::get('/admin', [ProfileController::class, 'testingAdminPage'])->name('admin');

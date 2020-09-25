@@ -38,4 +38,18 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Team');
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role');
+    }
+
+    public function hasRoles($param)
+    {
+        if ($this->roles->contains('name',$param)) {
+            return true;
+        }
+
+        return false;
+    }
 }

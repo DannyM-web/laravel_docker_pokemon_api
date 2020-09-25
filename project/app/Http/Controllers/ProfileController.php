@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use App\Models\Type;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -44,5 +45,13 @@ class ProfileController extends Controller
         $types = Type::whereIn('id', $typesId)->get();
         $userId = $request->user_id;
         return view('filter', compact('query','types','userId'));      
+    }
+
+
+    public function testingAdminPage()
+    {
+        $users = User::all();
+
+        return view('admin',compact('users'));
     }
 }

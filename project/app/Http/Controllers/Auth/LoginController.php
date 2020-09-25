@@ -13,15 +13,21 @@ class LoginController extends Controller
 }
 
     public function authenticate(Request $request)
-    {
+    {   
+        
         $request->validate([
             'name' => 'required|string|max:255',
             'password' => 'required|string'
         ]);
 
         $credentials = $request->only('name', 'password');
-
+        
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            // dd($user->hasRoles('admin'));
+            if ($user->hasRoles('admin')) {
+                return redirect('/admin');
+            }
             // Authentication passed...
             return redirect()->intended(route('index'))->withSuccess('Login avvenuto con successo, benvenuto '. $request->name) ;
         }
