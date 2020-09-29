@@ -22,12 +22,16 @@
                             <input type="text" name="name" id="" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="password" class="text-info">Password:</label><br>
-                            <input type="text" name="password" id="" class="form-control" required>
+                            <label for="email" class="text-info">Email</label><br>
+                            <input type="email" name="email" id="" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="password" class="text-info">Password:</label><br>
-                            <input type="text" name="password_confirmation" id="password_confirmation" class="form-control" required>
+                            <input type="password" name="password" id="" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="text-info">Conferma Password:</label><br>
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>

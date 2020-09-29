@@ -12,11 +12,13 @@ class ProfileTest extends TestCase
     use RefreshDatabase;
 
     public function testProfilePageView()
-    {
+    {   
+        $this->artisan('db:seed');
         $user = User::factory()->create();
         $team = Team::factory()->create([
             'user_id'=>$user->id
         ]);
+        $user->assignStatus('accepted');
         $response = $this->actingAs($user)->get('/profile/' . $user->id);
         $this->assertEquals($user->id, $team->user->id);
         $response->assertSuccessful();

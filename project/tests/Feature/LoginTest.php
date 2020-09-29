@@ -35,7 +35,8 @@ class LoginTest extends TestCase
     public function testLoginAdminAction()
     {
         $user= User::factory()->create([
-            'name'=>'testadmin'
+            'name'=>'testadmin',
+            'email'=>'test@test.it'
         ]);
         $role= Role::factory()->create();
         $user->roles()->attach($role);
@@ -44,6 +45,7 @@ class LoginTest extends TestCase
 
         $response = $this->post('/auth', [
             'name'=>'testadmin',
+            'email'=>'test@test.it',
             'password'=>'password'
         ]);
 
@@ -55,8 +57,17 @@ class LoginTest extends TestCase
     {
         $response = $this->post('/auth',[
             'name'=>'danilo',
+            'email'=>'prova@prova.it',
             'password'=>'provaprova'
-        ])->assertRedirect(route('login_form'));
+        ]);
+
+        $this->assertInvalidCredentials([
+            'name'=>'danilo',
+            'email'=>'prova@prova.it',
+            'password'=>'provaprova'
+        ], $guard = null);
+
+        $response->assertRedirect($uri=null);
     }
 
     

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePokemonsTable extends Migration
+class CreatePendingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,15 @@ class CreatePokemonsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pokemons', function (Blueprint $table) {
+        Schema::create('pendings', function (Blueprint $table) {
             $table->id();
-
             $table->string('name');
-            $table->smallInteger('base_exp')->unsigned();
-            $table->string('picture');
-
-            $table->foreignId('team_id')
+            $table->string('email')->unique();
+            $table->integer('user_id');
+            $table->foreignId('status_id')
+                ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
-
             $table->timestamps();
         });
     }
@@ -35,6 +33,6 @@ class CreatePokemonsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pokemons');
+        Schema::dropIfExists('pendings');
     }
 }

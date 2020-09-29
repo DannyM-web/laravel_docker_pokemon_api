@@ -8,37 +8,37 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login(){
+    public function login()
+    {
         return view('auth.login');
-}
+    }
 
     public function authenticate(Request $request)
-    {   
-        
+    {
+
         $request->validate([
-            'name' => 'required|string|max:255',
+            'email' => 'required|email|exists:users,email',
             'password' => 'required|string'
         ]);
 
-        $credentials = $request->only('name', 'password');
-        
+        $credentials = $request->only('email', 'password');
+
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            // dd($user->hasRoles('admin'));
             if ($user->hasRoles('admin')) {
                 return redirect('/admin');
             }
             // Authentication passed...
-            return redirect()->intended(route('index'))->withSuccess('Login avvenuto con successo, benvenuto '. $request->name) ;
+            return redirect()->intended(route('index'))->withSuccess('Login avvenuto con successo, benvenuto ' . $request->name);
         }
 
-        return redirect('login')->withErrors('Credenziali di accesso non valide');
+        return redirect()->back()->withErrors('Credenziali di accesso non valide');
     }
 
     public function logout()
     {
         Auth::logout();
-        
+
         return redirect()->route('login_form');
     }
 }

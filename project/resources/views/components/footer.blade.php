@@ -1,6 +1,8 @@
     <!-- Footer -->
     @auth
         
+   @if (!Auth::user()->hasRoles('admin'))
+       
    
 <footer class="page-footer font-small blue pt-4">
 
@@ -83,5 +85,6 @@
     <!-- Copyright -->
   
   </footer>
+  @endif
   @endauth
   <!-- Footer -->

@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
@@ -17,9 +20,12 @@ class RegisterTest extends TestCase
     }
 
     public function testRegisterPageAction()
-    {
+    {   
+        $this->artisan('db:seed');
+
         $response = $this->post('/reg', [
-            'name' => 'alfio',
+            'name' => 'test',
+            'email'=>'test@test.it',
             'password' => 'provaprova',
             'password_confirmation' => 'provaprova'
         ]);

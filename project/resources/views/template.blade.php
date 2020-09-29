@@ -21,9 +21,8 @@
     </header>
 
     <main>
-        {{-- <div id="content" class="w-100" style=""> --}}
-            @yield('content')
-        {{-- </div> --}}
+
+            @yield('content')   
     </main>
 
     

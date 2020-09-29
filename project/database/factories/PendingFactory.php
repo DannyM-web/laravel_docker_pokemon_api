@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
+use App\Models\Pending;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class RoleFactory extends Factory
+class PendingFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Role::class;
+    protected $model = Pending::class;
 
     /**
      * Define the model's default state.
@@ -22,9 +22,11 @@ class RoleFactory extends Factory
      */
     public function definition()
     {
-        
         return [
-            'name'=> 'admin'
+            'name' => $this->faker->name,
+            'email'=> $this->faker->email,
+            'user_id'=> 2,
+            'status_id'=> 2
         ];
     }
 }

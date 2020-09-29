@@ -7,6 +7,7 @@ use App\Services\Caller;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class TeamTest extends TestCase
@@ -14,7 +15,9 @@ class TeamTest extends TestCase
     use RefreshDatabase;
     public function testTeamCreatePageView()
     {   
+        $this->artisan('db:seed');
         $user = User::factory()->create();
+        $user->assignStatus('accepted');
         $response = $this->actingAs($user)
         ->get('/team/create');
 
@@ -23,8 +26,10 @@ class TeamTest extends TestCase
     }
 
     public function testTeamCreateAction()
-    {
+    {   
+        $this->artisan('db:seed');
         $user = User::factory()->create();
+        $user->assignStatus('accepted');
         $response = $this->actingAs($user)
         ->post('/team/store',['name'=>'teamtest']);
 
@@ -36,8 +41,10 @@ class TeamTest extends TestCase
 
     public function testTeamEditPageView()
     {   
+        $this->artisan('db:seed');
         $team = Team::factory()->create();
         $user = User::factory()->create();
+        $user->assignStatus('accepted');
         $response = $this->actingAs($user)
         ->get('/team/edit/' . $team->id);
         
@@ -47,9 +54,11 @@ class TeamTest extends TestCase
        
     }
     public function testTeamEditAction()
-    {
+    {   
+        $this->artisan('db:seed');
         $team = Team::factory()->create();
         $user = User::factory()->create();
+        $user->assignStatus('accepted');
         $response = $this->actingAs($user)
         ->post('/team/update/' . $team->id,['name'=>'teamtestedited']);
 
@@ -58,10 +67,11 @@ class TeamTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-    // da testare non funziona
     public function testTeamDelete()
     {   
+        $this->artisan('db:seed');
         $user = User::factory()->create();
+        $user->assignStatus('accepted');
         $team = Team::factory()->create([
             'user_id'=>$user->id
         ]);
@@ -74,29 +84,31 @@ class TeamTest extends TestCase
 
     public function testTeamIndexGuestPage()
     {
-        $response = $this->get('/');
+        $response = $this->get(route('index'));
         $this->assertGuest($guard = null);
-        $response->assertSuccessful();
+        // $response->assertSuccessful();
+        // dd($response);
         $response->assertViewIs('home');
     }
 
     public function testTeamIndexAuthPage()
     {   
-        $user = User::create([
-            'name'=>'test',
-            'password'=>'testings'
-        ]);
+        $this->artisan('db:seed');
+        $user = User::factory()->create();
+        // Auth::login($user);
+        $user->assignStatus('accepted');
         $response = $this->actingAs($user)->get('/');
-        $this->assertAuthenticatedAs($user,$guard = null);
         $response->assertSuccessful();
         $response->assertViewIs('home');
     }
 
     public function testTeamShowPage()
-    {
+    {   
+        $this->artisan('db:seed');
         $user = User::factory()->create();
+        $user->assignStatus('accepted');
         $team= Team::factory()->create();
-        $response = $this->get('/team/show/'. $team->id);
+        $response = $this->actingAs($user)->get('/team/show/'. $team->id);
         $response->assertSuccessful();
 
     }

@@ -16,8 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            PokemonSeeder::class,      
-            TeamSeeder::class
+            // PokemonSeeder::class,      
+            // TeamSeeder::class,
+            StatusSeeder::class,
+            RoleSeeder::class,
+            AdminSeeder::class
         ]);
     }
 }
