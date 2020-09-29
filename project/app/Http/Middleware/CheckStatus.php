@@ -17,16 +17,16 @@ class CheckStatus
      */
     public function handle(Request $request, Closure $next)
     {
-        if ((Auth::user()) && (!Auth::user()->hasRoles('admin'))) {
+        if (Auth::user()) {
 
-            if (!$request->user()) {
-                return redirect('/');
-            }
+            if (!Auth::user()->hasRoles('admin')) {
 
-            if (!$request->user()->hasStatus('accepted')) {
-                return redirect('/queue');
+                if (!$request->user()->hasStatus('accepted')) {
+
+                    return redirect()->route('queue');
+                }
             }
-            return $next($request);
         }
+        return $next($request);
     }
 }

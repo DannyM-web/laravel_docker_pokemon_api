@@ -29,6 +29,8 @@
         </div>
         @endforeach
     </div>
+    @if (Auth::user()->id == $userId)
+        
     <div class="create-button-container">
         <span>
             <a href="{{route('create')}}">
@@ -36,6 +38,7 @@
             </a>
         </span>
     </div>
+    @endif
 </div>
 
 @endsection

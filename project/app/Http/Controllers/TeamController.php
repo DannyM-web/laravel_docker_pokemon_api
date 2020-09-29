@@ -71,6 +71,7 @@ class TeamController extends Controller
     {
 
         $teams = Team::all();
+
         if (Auth::user()) {
             if (!Auth::user()->hasStatus('accepted')) {
                 return redirect()->route('queue');

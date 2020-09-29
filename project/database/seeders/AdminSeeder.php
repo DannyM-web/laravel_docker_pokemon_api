@@ -24,5 +24,6 @@ class AdminSeeder extends Seeder
 
         $user = User::where('name', 'admin')->get()->first();
         $user->assignRole('admin');
+        $user->assignStatus('accepted');
     }
 }

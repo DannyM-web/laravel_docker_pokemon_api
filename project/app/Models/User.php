@@ -7,6 +7,7 @@ use ErrorException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -72,9 +73,13 @@ class User extends Authenticatable
 
     public function hasStatus($param)
     {
-        if ($this->status->name === $param) {
-            return true;
+
+        if ($this->status) {
+            if ($this->status->name == $param) {
+                return true;
+            }
         }
+
 
         return false;
     }

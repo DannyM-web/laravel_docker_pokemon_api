@@ -20,7 +20,7 @@ class TeamTest extends TestCase
         $user->assignStatus('accepted');
         $response = $this->actingAs($user)
         ->get('/team/create');
-
+        
         $response->assertSuccessful();
         $response->assertViewIs('teamCreate');
     }

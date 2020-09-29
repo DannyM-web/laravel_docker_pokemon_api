@@ -47,7 +47,7 @@ Route::get('/team/show/{id}', [TeamController::class, 'show'])->name('show')->mi
 
 Route::get('/pokemon/catch', [TeamController::class, 'catch'])->name('catch')->middleware('auth', 'accepted');
 
-Route::get('/profile/{id}', [ProfileController::class, 'index'])->name('profile')->middleware('accepted', 'auth');
+Route::get('/profile/{id}', [ProfileController::class, 'index'])->name('profile')->middleware('auth', 'accepted');
 Route::get('/filter', [ProfileController::class, 'filter'])->name('filter')->middleware('auth', 'accepted');
 
 

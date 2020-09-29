@@ -14,8 +14,11 @@ class ProfileController extends Controller
 {
     public function index($id)
     {
-        if (!(User::where('id', $id)->exists()) || (Auth::user()->id !== (int)$id)) {
-            return redirect()->route('index');
+        if (!Auth::user()->hasRoles('admin')) {
+            if (!(User::where('id', $id)->exists()) || (Auth::user()->id !== (int)$id)) {
+
+                return redirect()->route('index');
+            }
         }
 
         $types = Type::all();
@@ -54,7 +57,22 @@ class ProfileController extends Controller
 
     public function queue()
     {
+
         $user = Auth::user();
-        return view('queue', compact('user'));
+
+        $message = ' ';
+
+        if ($user) {
+
+            if ($user->status) {
+                if ($user->status->name == 'pending') {
+                    $message = 'La tua richiesta è in stato di approvazione. I nostri admin stanno esaminando la sua richiesta.';
+                } elseif ($user->status->name == 'rejected') {
+                    $message = 'La tua richiesta di registrazione è stata rifiutata dai nostri admin. Mi dispiace';
+                }
+                return view('queue', compact('message'));
+            }
+        }
+        return redirect()->route('index');
     }
 }
